@@ -6,6 +6,7 @@ import (
 	configuration "url-shortener/config"
 	"url-shortener/internal/url"
 	"url-shortener/pkg/database"
+	"url-shortener/pkg/middleware"
 )
 
 func main() {
@@ -27,7 +28,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:    ":8081", //TODO: add to config
-		Handler: router,
+		Handler: middleware.CORS(router),
 	}
 	err = server.ListenAndServe()
 	if err != nil {
