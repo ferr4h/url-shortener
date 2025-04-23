@@ -22,9 +22,12 @@ func main() {
 	//Repositories
 	urlRepository := url.NewUrlRepository(session)
 
+	//Services
+	urlService := url.NewUrlService(urlRepository)
+
 	//Handlers
 	router := http.NewServeMux()
-	url.NewUrlHandler(router, config, urlRepository)
+	url.NewUrlHandler(router, config, urlService)
 
 	server := &http.Server{
 		Addr:    ":8081", //TODO: add to config
