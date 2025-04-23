@@ -30,7 +30,7 @@ func main() {
 	url.NewUrlHandler(router, config, urlService)
 
 	server := &http.Server{
-		Addr:    ":8081", //TODO: add to config
+		Addr:    config.Host.Port,
 		Handler: middleware.CORS(router),
 	}
 	err = server.ListenAndServe()
