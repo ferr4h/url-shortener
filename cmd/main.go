@@ -19,8 +19,10 @@ func main() {
 	}
 	defer session.Close()
 
+	redis := database.NewRedisClient(config)
+
 	//Repositories
-	urlRepository := url.NewUrlRepository(session)
+	urlRepository := url.NewUrlRepository(session, redis)
 
 	//Services
 	urlService := url.NewUrlService(urlRepository)

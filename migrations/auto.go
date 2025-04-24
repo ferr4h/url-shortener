@@ -16,7 +16,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	cluster := gocql.NewCluster(os.Getenv("Host"))
+	cluster := gocql.NewCluster(os.Getenv("CASSANDRA_HOST"))
 	cluster.Keyspace = "system"
 	cluster.Consistency = gocql.Quorum
 	session, err := cluster.CreateSession()
