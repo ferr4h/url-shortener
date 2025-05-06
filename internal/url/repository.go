@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+const cacheExpiration = 10
+
 var ctx = context.Background()
 
 type UrlRepository struct {
@@ -40,7 +42,7 @@ func (repo *UrlRepository) GetUrl(hash string) (string, error) {
 }
 
 func (repo *UrlRepository) setCacheEntry(hash, url string) {
-	err := repo.redis.Set(ctx, hash, url, time.Minute*10).Err()
+	err := repo.redis.Set(ctx, hash, url, time.Minute*cacheExpiration).Err()
 	if err != nil {
 		fmt.Println(err)
 	}

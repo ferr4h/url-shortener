@@ -1,3 +1,4 @@
 /cassandra_data
 /.env
 /.idea
+/redis_data

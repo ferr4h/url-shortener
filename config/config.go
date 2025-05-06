@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	Host HostConfig
-	Db   DbConfig
+	Host  HostConfig
+	Db    DbConfig
+	Cache CacheConfig
 }
 
 type HostConfig struct {
@@ -16,6 +17,11 @@ type HostConfig struct {
 }
 
 type DbConfig struct {
+	Host     string
+	Keyspace string
+}
+
+type CacheConfig struct {
 	Host string
 }
 
@@ -24,5 +30,9 @@ func LoadConfig() *Config {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	return &Config{HostConfig{Port: os.Getenv("PORT")}, DbConfig{Host: os.Getenv("CASSANDRA_HOST")}}
+	return &Config{
+		HostConfig{Port: os.Getenv("PORT")},
+		DbConfig{Host: os.Getenv("CASSANDRA_HOST"), Keyspace: os.Getenv("CLUSTER_KEYSPACE")},
+		CacheConfig{os.Getenv("REDIS_HOST")},
+	}
 }

@@ -1,22 +1,35 @@
 services:
   cassandra:
     container_name: cassandra
-    image: cassandra
+    image: cassandra:latest
     ports:
       - "9042:9042"
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra_cluster
       - CASSANDRA_NUM_TOKENS=256
     volumes:
-      - ./cassandra_data:/data/cassandra
+      - cassandra_data:/var/lib/cassandra
 
   redis:
     container_name: redis
-    image: redis
+    image: redis:latest
     ports:
       - "6379:6379"
     volumes:
-      - ./redis_data:/data
+      - redis_data:/data
+
+  url-service:
+    build: .
+    container_name: url-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - cassandra
+      - redis
+    environment:
+      - PORT=:8080
+      - CASSANDRA_HOST=cassandra:9042
+      - REDIS_HOST=redis:6379
 
 volumes:
   cassandra_data:

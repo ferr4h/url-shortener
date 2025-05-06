@@ -7,7 +7,7 @@ import (
 
 func NewRedisClient(config *config.Config) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", //TODO: add to config
+		Addr:     config.Cache.Host,
 		Password: "",
 		DB:       0,
 	})
