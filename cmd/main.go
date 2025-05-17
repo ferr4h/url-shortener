@@ -9,9 +9,7 @@ import (
 	"url-shortener/pkg/middleware"
 )
 
-func main() {
-	config := configuration.LoadConfig()
-
+func App(config *configuration.Config) http.Handler {
 	cluster := database.NewCassandraCluster(config)
 	session, err := cluster.CreateSession()
 	if err != nil {
@@ -31,11 +29,18 @@ func main() {
 	router := http.NewServeMux()
 	url.NewUrlHandler(router, config, urlService)
 
+	return middleware.CORS(router)
+}
+
+func main() {
+	config := configuration.LoadConfig()
+	app := App(config)
+
 	server := &http.Server{
 		Addr:    config.Host.Port,
-		Handler: middleware.CORS(router),
+		Handler: app,
 	}
-	err = server.ListenAndServe()
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}

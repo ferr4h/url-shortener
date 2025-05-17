@@ -2,3 +2,4 @@
 /.env
 /.idea
 /redis_data
+/cmd/.env
